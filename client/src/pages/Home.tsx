@@ -142,7 +142,7 @@ export default function Home() {
           <div className="flex items-center justify-between mb-8">
             <div className="flex items-center gap-3">
               {renderIcon("news")}
-              <h2 className="text-3xl font-bold">📰 AI News & Breakthroughs</h2>
+              <h2 className="text-3xl font-bold">AI News & Breakthroughs</h2>
             </div>
             <button onClick={() => setLocation("/ai-news")} className="flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors">
               View All <ArrowRight className="w-4 h-4" />
@@ -170,7 +170,7 @@ export default function Home() {
           <div className="flex items-center justify-between mb-8">
             <div className="flex items-center gap-3">
               {renderIcon("careers")}
-              <h2 className="text-3xl font-bold">💼 AI Careers & Opportunities</h2>
+              <h2 className="text-3xl font-bold">AI Careers & Opportunities</h2>
             </div>
             <button onClick={() => setLocation("/ai-careers")} className="flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors">
               View All <ArrowRight className="w-4 h-4" />
@@ -195,7 +195,7 @@ export default function Home() {
           <div className="flex items-center justify-between mb-8">
             <div className="flex items-center gap-3">
               {renderIcon("research")}
-              <h2 className="text-3xl font-bold">📚 Groundbreaking Research Papers</h2>
+              <h2 className="text-3xl font-bold">Groundbreaking Research Papers</h2>
             </div>
             <button onClick={() => setLocation("/")} className="flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors">
               View All <ArrowRight className="w-4 h-4" />
@@ -220,7 +220,7 @@ export default function Home() {
           <div className="flex items-center justify-between mb-8">
             <div className="flex items-center gap-3">
               {renderIcon("ideas")}
-              <h2 className="text-3xl font-bold">🚀 AI Startup Ideas</h2>
+              <h2 className="text-3xl font-bold">AI Startup Ideas</h2>
             </div>
             <button onClick={() => setLocation("/")} className="flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors">
               View All <ArrowRight className="w-4 h-4" />
@@ -244,7 +244,7 @@ export default function Home() {
           <div className="flex items-center justify-between mb-8">
             <div className="flex items-center gap-3">
               {renderIcon("ethics")}
-              <h2 className="text-3xl font-bold">⚖️ AI Ethics & Responsibility</h2>
+              <h2 className="text-3xl font-bold">AI Ethics & Responsibility</h2>
             </div>
             <button onClick={() => setLocation("/")} className="flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors">
               View All <ArrowRight className="w-4 h-4" />
@@ -267,7 +267,7 @@ export default function Home() {
           <div className="flex items-center justify-between mb-8">
             <div className="flex items-center gap-3">
               {renderIcon("domains")}
-              <h2 className="text-3xl font-bold">🌍 AI Domains Explorer</h2>
+              <h2 className="text-3xl font-bold">AI Domains Explorer</h2>
             </div>
             <button onClick={() => setLocation("/")} className="flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors">
               View All <ArrowRight className="w-4 h-4" />
@@ -289,7 +289,7 @@ export default function Home() {
           <div className="flex items-center justify-between mb-8">
             <div className="flex items-center gap-3">
               {renderIcon("usecases")}
-              <h2 className="text-3xl font-bold">💡 Use Cases Explorer</h2>
+              <h2 className="text-3xl font-bold">Use Cases Explorer</h2>
             </div>
             <button onClick={() => setLocation("/")} className="flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors">
               View All <ArrowRight className="w-4 h-4" />
@@ -310,7 +310,7 @@ export default function Home() {
           <div className="mb-8">
             <div className="flex items-center gap-3 mb-6">
               {renderIcon("tools")}
-              <h2 className="text-3xl font-bold">🛠️ AI Tools Directory</h2>
+              <h2 className="text-3xl font-bold">AI Tools Directory</h2>
             </div>
 
             {/* Search and Filter */}
@@ -376,7 +376,7 @@ export default function Home() {
           <div className="mb-8">
             <div className="flex items-center gap-3">
               {renderIcon("ideas")}
-              <h2 className="text-3xl font-bold">✨ 50+ Visionary AI Possibilities</h2>
+              <h2 className="text-3xl font-bold">50+ Visionary AI Possibilities</h2>
             </div>
           </div>
 
