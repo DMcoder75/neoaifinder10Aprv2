@@ -7,15 +7,23 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
 import AINews from "./pages/AINews";
 import AICareers from "./pages/AICareers";
+import Tools from "./pages/Tools";
+import Research from "./pages/Research";
+import Domains from "./pages/Domains";
+import Community from "./pages/Community";
 
 
 function Router() {
   return (
     <Switch>
-      <Route path={"/"} component={Home} />
-      <Route path={"/ai-news"} component={AINews} />
-      <Route path={"/ai-careers"} component={AICareers} />
-      <Route path={"/404"} component={NotFound} />
+      <Route path="/" component={Home} />
+      <Route path="/ai-news" component={AINews} />
+      <Route path="/ai-careers" component={AICareers} />
+      <Route path="/tools" component={Tools} />
+      <Route path="/research" component={Research} />
+      <Route path="/domains" component={Domains} />
+      <Route path="/community" component={Community} />
+      <Route path="/404" component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />
     </Switch>

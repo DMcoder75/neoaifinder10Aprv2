@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Search, ChevronRight, ArrowRight, Eye, Newspaper, Briefcase, BookOpen, Lightbulb, Scale, TrendingUp, GraduationCap, BarChart3, Globe, Compass, Users, MessageSquare, Plus, Star, Zap, Sparkles, Flame, Clock, Users2 } from "lucide-react";
 import { VISIONARY_POSSIBILITIES, AI_TOOLS, AI_CATEGORIES } from "@/const";
 import { NEWS_ARTICLES, CAREER_LISTINGS, RESEARCH_PAPERS, STARTUP_IDEAS, DOMAINS_DETAILED, USE_CASES_DETAILED, ETHICS_TOPICS } from "@/data/richContent";
+import { getImageForIndex } from "@/data/images";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -68,8 +69,8 @@ export default function Home() {
                 </Button>
               </motion.div>
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Button variant="outline" className="border-purple-500 px-8 py-4 text-lg font-bold rounded-lg hover:bg-purple-500/10">
-                  Learn More
+                <Button onClick={() => setLocation("/community")} variant="outline" className="border-purple-500 px-8 py-4 text-lg font-bold rounded-lg hover:bg-purple-500/10">
+                  Get Started
                 </Button>
               </motion.div>
             </div>
@@ -156,7 +157,7 @@ export default function Home() {
               <motion.div key={article.id} variants={itemVariants} whileHover={{ y: -10 }} onClick={() => setLocation("/ai-news")} className="group cursor-pointer">
                 <Card className="bg-gray-900/50 border border-purple-500/20 hover:border-purple-500/50 transition-all overflow-hidden h-full">
                   <div className="relative h-40 overflow-hidden">
-                    <img src={article.image} alt={article.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                    <img src={getImageForIndex("news", idx)} alt={article.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                     {article.trending && <Badge className="absolute top-3 right-3 bg-red-500/80 text-white text-xs">Trending</Badge>}
                   </div>
@@ -192,7 +193,7 @@ export default function Home() {
               <motion.div key={career.id} variants={itemVariants} whileHover={{ y: -10 }} onClick={() => setLocation("/ai-careers")} className="group cursor-pointer">
                 <Card className="bg-gray-900/50 border border-purple-500/20 hover:border-purple-500/50 transition-all overflow-hidden h-full">
                   <div className="relative h-40 overflow-hidden">
-                    <img src={career.image} alt={career.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                    <img src={getImageForIndex("careers", idx)} alt={career.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                   </div>
                   <div className="p-6">
@@ -236,7 +237,7 @@ export default function Home() {
               <motion.div key={paper.id} variants={itemVariants} whileHover={{ y: -10 }} className="group">
                 <Card className="bg-gray-900/50 border border-purple-500/20 hover:border-purple-500/50 transition-all overflow-hidden h-full">
                   <div className="relative h-40 overflow-hidden">
-                    <img src={paper.image} alt={paper.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                    <img src={getImageForIndex("research", idx)} alt={paper.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                   </div>
                   <div className="p-6">
@@ -271,7 +272,7 @@ export default function Home() {
               <motion.div key={domain.id} variants={itemVariants} whileHover={{ y: -10 }} onClick={() => setLocation("/domains")} className="group cursor-pointer">
                 <Card className="bg-gray-900/50 border border-purple-500/20 hover:border-purple-500/50 transition-all overflow-hidden h-full">
                   <div className="relative h-40 overflow-hidden">
-                    <img src={domain.image} alt={domain.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                    <img src={getImageForIndex("domains", idx)} alt={domain.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                   </div>
                   <div className="p-6">
@@ -306,7 +307,7 @@ export default function Home() {
               <motion.div key={usecase.id} variants={itemVariants} whileHover={{ y: -10 }} onClick={() => setLocation("/use-cases")} className="group cursor-pointer">
                 <Card className="bg-gray-900/50 border border-purple-500/20 hover:border-purple-500/50 transition-all overflow-hidden h-full">
                   <div className="relative h-40 overflow-hidden">
-                    <img src={usecase.image} alt={usecase.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                    <img src={getImageForIndex("usecases", idx)} alt={usecase.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                   </div>
                   <div className="p-6">
@@ -337,7 +338,7 @@ export default function Home() {
               <motion.div key={idea.id} variants={itemVariants} whileHover={{ y: -10 }} className="group">
                 <Card className="bg-gray-900/50 border border-purple-500/20 hover:border-purple-500/50 transition-all overflow-hidden h-full">
                   <div className="relative h-40 overflow-hidden">
-                    <img src={idea.image} alt={idea.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                    <img src={getImageForIndex("startups", idx)} alt={idea.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                   </div>
                   <div className="p-6">
