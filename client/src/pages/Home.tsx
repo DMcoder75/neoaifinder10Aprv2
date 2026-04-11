@@ -153,7 +153,7 @@ export default function Home() {
           </div>
 
           <motion.div variants={containerVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {NEWS_ARTICLES.slice(0, 3).map((article) => (
+            {NEWS_ARTICLES.slice(0, 3).map((article, idx) => (
               <motion.div key={article.id} variants={itemVariants} whileHover={{ y: -10 }} onClick={() => setLocation("/ai-news")} className="group cursor-pointer">
                 <Card className="bg-gray-900/50 border border-purple-500/20 hover:border-purple-500/50 transition-all overflow-hidden h-full">
                   <div className="relative h-40 overflow-hidden">
@@ -189,7 +189,7 @@ export default function Home() {
           </div>
 
           <motion.div variants={containerVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {CAREER_LISTINGS.slice(0, 2).map((career) => (
+            {CAREER_LISTINGS.slice(0, 2).map((career, idx) => (
               <motion.div key={career.id} variants={itemVariants} whileHover={{ y: -10 }} onClick={() => setLocation("/ai-careers")} className="group cursor-pointer">
                 <Card className="bg-gray-900/50 border border-purple-500/20 hover:border-purple-500/50 transition-all overflow-hidden h-full">
                   <div className="relative h-40 overflow-hidden">
@@ -233,7 +233,7 @@ export default function Home() {
           </div>
 
           <motion.div variants={containerVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {RESEARCH_PAPERS.slice(0, 3).map((paper) => (
+            {RESEARCH_PAPERS.slice(0, 3).map((paper, idx) => (
               <motion.div key={paper.id} variants={itemVariants} whileHover={{ y: -10 }} className="group">
                 <Card className="bg-gray-900/50 border border-purple-500/20 hover:border-purple-500/50 transition-all overflow-hidden h-full">
                   <div className="relative h-40 overflow-hidden">
@@ -268,7 +268,7 @@ export default function Home() {
           </div>
 
           <motion.div variants={containerVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {DOMAINS_DETAILED.slice(0, 3).map((domain) => (
+            {DOMAINS_DETAILED.slice(0, 3).map((domain, idx) => (
               <motion.div key={domain.id} variants={itemVariants} whileHover={{ y: -10 }} onClick={() => setLocation("/domains")} className="group cursor-pointer">
                 <Card className="bg-gray-900/50 border border-purple-500/20 hover:border-purple-500/50 transition-all overflow-hidden h-full">
                   <div className="relative h-40 overflow-hidden">
@@ -303,7 +303,7 @@ export default function Home() {
           </div>
 
           <motion.div variants={containerVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {USE_CASES_DETAILED.slice(0, 2).map((usecase) => (
+            {USE_CASES_DETAILED.slice(0, 2).map((usecase, idx) => (
               <motion.div key={usecase.id} variants={itemVariants} whileHover={{ y: -10 }} onClick={() => setLocation("/use-cases")} className="group cursor-pointer">
                 <Card className="bg-gray-900/50 border border-purple-500/20 hover:border-purple-500/50 transition-all overflow-hidden h-full">
                   <div className="relative h-40 overflow-hidden">
@@ -334,7 +334,7 @@ export default function Home() {
           </div>
 
           <motion.div variants={containerVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {STARTUP_IDEAS.slice(0, 2).map((idea) => (
+            {STARTUP_IDEAS.slice(0, 2).map((idea, idx) => (
               <motion.div key={idea.id} variants={itemVariants} whileHover={{ y: -10 }} className="group">
                 <Card className="bg-gray-900/50 border border-purple-500/20 hover:border-purple-500/50 transition-all overflow-hidden h-full">
                   <div className="relative h-40 overflow-hidden">
