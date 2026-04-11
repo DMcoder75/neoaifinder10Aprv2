@@ -1,30 +1,33 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Search, Filter, Clock, Eye, Heart, Share2, ChevronRight, ArrowLeft } from "lucide-react";
+import { Search, Clock, Eye, Heart, Share2, ChevronRight, ArrowLeft } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { EXPANDED_AI_NEWS } from "@/data/expandedContent";
+import { NEWS_ARTICLES } from "@/data/richContent";
 import { useLocation } from "wouter";
+import Header from "@/components/Header";
 
 export default function AINews() {
   const [, setLocation] = useLocation();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
-  const [selectedNews, setSelectedNews] = useState<typeof EXPANDED_AI_NEWS[0] | null>(null);
+  const [selectedNews, setSelectedNews] = useState<typeof NEWS_ARTICLES[0] | null>(null);
 
   const categories = ["all", "Large Language Models", "Image Generation", "AI Research", "Multimodal"];
 
-  const filteredNews = EXPANDED_AI_NEWS.filter((news) => {
+  const filteredNews = NEWS_ARTICLES.filter((news) => {
     const matchesSearch = news.title.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = selectedCategory === "all" || news.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
 
   return (
-    <div className="min-h-screen bg-black text-white">
-      {/* Header */}
-      <div className="sticky top-0 z-40 bg-gradient-to-b from-black to-black/80 border-b border-purple-500/20 backdrop-blur-sm">
+    <div className="min-h-screen bg-black text-white pt-20">
+      <Header />
+      
+      {/* Page Header */}
+      <div className="sticky top-20 z-40 bg-gradient-to-b from-black to-black/80 border-b border-purple-500/20 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 md:px-8 py-6">
           <div className="flex items-center gap-4 mb-6">
             <button
@@ -34,7 +37,7 @@ export default function AINews() {
               <ArrowLeft className="w-5 h-5 text-purple-400" />
             </button>
             <div>
-              <h1 className="text-3xl font-bold">📰 AI News & Breakthroughs</h1>
+              <h1 className="text-3xl font-bold">AI News & Breakthroughs</h1>
               <p className="text-gray-400 text-sm mt-1">Stay updated with the latest in AI</p>
             </div>
           </div>

@@ -1,98 +1,20 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, ChevronDown, X, ArrowRight, Heart, Share2, Eye, Newspaper, Briefcase, BookOpen, Lightbulb, Scale, TrendingUp, GraduationCap, BarChart3, Globe, Compass, Users, MessageSquare, Plus, Star, Zap, Sparkles, Flame } from "lucide-react";
+import { Search, ChevronRight, ArrowRight, Eye, Newspaper, Briefcase, BookOpen, Lightbulb, Scale, TrendingUp, GraduationCap, BarChart3, Globe, Compass, Users, MessageSquare, Plus, Star, Zap, Sparkles, Flame, Clock, Users2 } from "lucide-react";
 import { VISIONARY_POSSIBILITIES, AI_TOOLS, AI_CATEGORIES } from "@/const";
+import { NEWS_ARTICLES, CAREER_LISTINGS, RESEARCH_PAPERS, STARTUP_IDEAS, DOMAINS_DETAILED, USE_CASES_DETAILED, ETHICS_TOPICS } from "@/data/richContent";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useLocation } from "wouter";
+import Header from "@/components/Header";
 
 const HERO_IMAGE = "https://d2xsxph8kpxj0f.cloudfront.net/310519663537154081/CryiRNCQAU6hTHfxuq7rHm/neoaifinder-hero-main-c8UKjevBuE7vwGbmCHQkSK.webp";
-
-// Professional Icon Mapping
-const SECTION_ICONS = {
-  news: Newspaper,
-  careers: Briefcase,
-  research: BookOpen,
-  ideas: Lightbulb,
-  ethics: Scale,
-  trends: TrendingUp,
-  learning: GraduationCap,
-  benchmarks: BarChart3,
-  domains: Globe,
-  tools: Compass,
-  usecases: Users,
-  community: MessageSquare,
-  submit: Plus,
-};
-
-const AI_DOMAINS = [
-  { id: "llms", name: "LLMs", tools: 8 },
-  { id: "vision", name: "Vision", tools: 7 },
-  { id: "video", name: "Video", tools: 6 },
-  { id: "audio", name: "Audio", tools: 5 },
-  { id: "code", name: "Code Gen", tools: 6 },
-  { id: "search", name: "Search", tools: 4 },
-  { id: "healthcare", name: "Healthcare", tools: 5 },
-  { id: "finance", name: "Finance", tools: 5 },
-  { id: "marketing", name: "Marketing", tools: 6 },
-  { id: "education", name: "Education", tools: 5 },
-  { id: "robotics", name: "Robotics", tools: 4 },
-  { id: "quantum", name: "Quantum", tools: 3 },
-];
-
-const AI_NEWS = [
-  { id: 1, title: "GPT-5 Rumors: What We Know So Far", category: "LLMs", date: "Today", views: 2400, trending: true },
-  { id: 2, title: "Midjourney v7 Releases with Real-time Generation", category: "Image AI", date: "Yesterday", views: 1800 },
-  { id: 3, title: "OpenAI Announces New Reasoning Capabilities", category: "AI Research", date: "2 days ago", views: 3200, trending: true },
-];
-
-const AI_CAREERS = [
-  { id: 1, title: "AI Prompt Engineer", salary: "$120K-180K", demand: "Very High", skills: 3, companies: 500 },
-  { id: 2, title: "ML Engineer", salary: "$150K-250K", demand: "Very High", skills: 5, companies: 1200 },
-  { id: 3, title: "AI Product Manager", salary: "$140K-220K", demand: "High", skills: 4, companies: 800 },
-];
-
-const AI_RESEARCH_PAPERS = [
-  { id: 1, title: "Attention Is All You Need", authors: "Vaswani et al.", year: 2017, citations: 85000 },
-  { id: 2, title: "BERT: Pre-training of Deep Bidirectional Transformers", authors: "Devlin et al.", year: 2018, citations: 45000 },
-  { id: 3, title: "Generative Adversarial Networks", authors: "Goodfellow et al.", year: 2014, citations: 68000 },
-];
-
-const AI_STARTUP_IDEAS = [
-  { id: 1, title: "AI-Powered Legal Document Review", market: "$50B", difficulty: "Medium" },
-  { id: 2, title: "Real-time AI Translation for Meetings", market: "$30B", difficulty: "Hard" },
-  { id: 3, title: "Personalized AI Health Coach", market: "$100B", difficulty: "Very Hard" },
-];
-
-const AI_ETHICS_TOPICS = [
-  { id: 1, title: "AI Bias & Fairness", concern: "Critical" },
-  { id: 2, title: "Privacy & Data Protection", concern: "Critical" },
-  { id: 3, title: "Transparency & Explainability", concern: "High" },
-];
-
-const USE_CASES = [
-  { id: 1, name: "Content Creation", tools: 12 },
-  { id: 2, name: "Code Development", tools: 8 },
-  { id: 3, name: "Design & Prototyping", tools: 7 },
-  { id: 4, name: "Data Analysis", tools: 6 },
-  { id: 5, name: "Customer Support", tools: 5 },
-  { id: 6, name: "Marketing", tools: 8 },
-  { id: 7, name: "Video Production", tools: 5 },
-  { id: 8, name: "Research", tools: 7 },
-];
-
-const TRENDING_TOOLS = [
-  { id: 1, name: "ChatGPT", category: "LLM", views: 15000, trend: "+45%" },
-  { id: 2, name: "Midjourney", category: "Image", views: 12000, trend: "+32%" },
-  { id: 3, name: "Claude", category: "LLM", views: 11000, trend: "+28%" },
-];
 
 export default function Home() {
   const [, setLocation] = useLocation();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
-  const [selectedVisionaryId, setSelectedVisionaryId] = useState<number | null>(null);
 
   const filteredTools = AI_TOOLS.filter((tool) => {
     const matchesSearch = tool.name.toLowerCase().includes(searchTerm.toLowerCase());
@@ -100,429 +22,396 @@ export default function Home() {
     return matchesSearch && matchesCategory;
   });
 
-  const selectedVisionary = VISIONARY_POSSIBILITIES.find((v) => v.id === selectedVisionaryId);
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
+  };
 
-  const renderIcon = (iconKey: string) => {
-    const Icon = SECTION_ICONS[iconKey as keyof typeof SECTION_ICONS];
-    return Icon ? <Icon className="w-5 h-5 text-purple-400" strokeWidth={1.5} /> : null;
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
   };
 
   return (
     <div className="min-h-screen bg-black text-white">
-      {/* ==================== HERO SECTION ==================== */}
-      <section className="relative h-[65vh] overflow-hidden">
-        <img src={HERO_IMAGE} alt="Hero" className="absolute inset-0 w-full h-full object-cover opacity-30" />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/50 to-black"></div>
+      <Header />
 
-        <div className="relative h-full flex flex-col justify-center items-center text-center px-4">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
-            <div className="flex items-center justify-center gap-2 mb-4">
-              <Sparkles className="w-5 h-5 text-purple-400" />
-              <span className="text-purple-400 text-sm font-semibold">Discover the Future of AI</span>
-              <Sparkles className="w-5 h-5 text-purple-400" />
+      {/* ==================== HERO SECTION ==================== */}
+      <section className="relative h-screen overflow-hidden pt-20">
+        <img src={HERO_IMAGE} alt="Hero" className="absolute inset-0 w-full h-full object-cover opacity-40" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/60 to-black"></div>
+
+        {/* Animated background elements */}
+        <motion.div className="absolute top-20 left-10 w-72 h-72 bg-purple-500/20 rounded-full blur-3xl" animate={{ y: [0, 30, 0] }} transition={{ duration: 8, repeat: Infinity }} />
+        <motion.div className="absolute bottom-20 right-10 w-96 h-96 bg-pink-500/20 rounded-full blur-3xl" animate={{ y: [0, -30, 0] }} transition={{ duration: 10, repeat: Infinity }} />
+
+        <div className="relative h-full flex flex-col justify-center items-center text-center px-4 z-10">
+          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1 }}>
+            <div className="flex items-center justify-center gap-2 mb-6">
+              <Sparkles className="w-5 h-5 text-purple-400 animate-pulse" />
+              <span className="text-purple-400 text-sm font-semibold uppercase tracking-widest">Discover the Future of AI</span>
+              <Sparkles className="w-5 h-5 text-purple-400 animate-pulse" />
             </div>
-            <h1 className="text-6xl md:text-7xl font-bold mb-4 bg-gradient-to-r from-purple-400 via-purple-300 to-pink-400 bg-clip-text text-transparent">
+
+            <h1 className="text-7xl md:text-8xl font-black mb-6 bg-gradient-to-r from-purple-200 via-purple-400 to-pink-400 bg-clip-text text-transparent leading-tight">
               Neoaifinder
             </h1>
-            <p className="text-xl md:text-2xl text-gray-300 mb-8 max-w-2xl mx-auto">
-              Explore 1000+ AI tools, 67 domains, and the future of artificial intelligence
+
+            <p className="text-xl md:text-2xl text-gray-300 mb-12 max-w-3xl mx-auto leading-relaxed">
+              Explore 1000+ AI tools, 67 domains, and the infinite possibilities of artificial intelligence
             </p>
 
-            <div className="flex flex-col md:flex-row gap-4 justify-center mb-12">
-              <Button className="bg-purple-600 hover:bg-purple-700 px-8 py-3 text-lg">Explore Tools</Button>
-              <Button variant="outline" className="border-purple-500 px-8 py-3 text-lg">Learn More</Button>
+            <div className="flex flex-col md:flex-row gap-4 justify-center mb-16">
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Button onClick={() => setLocation("/tools")} className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 px-8 py-4 text-lg font-bold rounded-lg shadow-lg shadow-purple-500/50">
+                  Explore Tools
+                </Button>
+              </motion.div>
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Button variant="outline" className="border-purple-500 px-8 py-4 text-lg font-bold rounded-lg hover:bg-purple-500/10">
+                  Learn More
+                </Button>
+              </motion.div>
             </div>
 
             {/* Quick Stats */}
-            <div className="grid grid-cols-3 md:grid-cols-6 gap-4 text-sm">
-              <div><div className="text-2xl font-bold text-purple-400">1000+</div><div className="text-gray-400 text-xs">Tools</div></div>
-              <div><div className="text-2xl font-bold text-purple-400">67</div><div className="text-gray-400 text-xs">Domains</div></div>
-              <div><div className="text-2xl font-bold text-purple-400">50+</div><div className="text-gray-400 text-xs">Possibilities</div></div>
-              <div><div className="text-2xl font-bold text-purple-400">100K+</div><div className="text-gray-400 text-xs">Reviews</div></div>
-              <div><div className="text-2xl font-bold text-purple-400">500K+</div><div className="text-gray-400 text-xs">Users</div></div>
-              <div><div className="text-2xl font-bold text-purple-400">24/7</div><div className="text-gray-400 text-xs">Updates</div></div>
-            </div>
+            <motion.div variants={containerVariants} initial="hidden" animate="visible" className="grid grid-cols-2 md:grid-cols-6 gap-6 text-center">
+              {[
+                { label: "Tools", value: "1000+" },
+                { label: "Domains", value: "67" },
+                { label: "Possibilities", value: "50+" },
+                { label: "Reviews", value: "100K+" },
+                { label: "Users", value: "500K+" },
+                { label: "Updates", value: "24/7" },
+              ].map((stat, idx) => (
+                <motion.div key={idx} variants={itemVariants} className="bg-white/5 backdrop-blur-md border border-purple-500/20 rounded-lg p-4">
+                  <div className="text-3xl font-bold text-transparent bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text">{stat.value}</div>
+                  <div className="text-xs text-gray-400 mt-2">{stat.label}</div>
+                </motion.div>
+              ))}
+            </motion.div>
           </motion.div>
         </div>
+
+        {/* Scroll indicator */}
+        <motion.div className="absolute bottom-10 left-1/2 transform -translate-x-1/2" animate={{ y: [0, 10, 0] }} transition={{ duration: 2, repeat: Infinity }}>
+          <ChevronRight className="w-6 h-6 text-purple-400 rotate-90" />
+        </motion.div>
       </section>
 
       {/* ==================== MAIN CONTENT ==================== */}
-      <div className="max-w-7xl mx-auto px-4 md:px-8 py-16 space-y-20">
+      <div className="max-w-7xl mx-auto px-4 md:px-8 py-20 space-y-32">
 
-        {/* TRENDING TOOLS - MOVED UP */}
+        {/* TRENDING TOOLS */}
         <motion.section initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }}>
-          <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center justify-between mb-12">
             <div className="flex items-center gap-3">
-              <Flame className="w-5 h-5 text-red-400" />
-              <h2 className="text-3xl font-bold">Trending Now</h2>
+              <Flame className="w-6 h-6 text-red-500" />
+              <h2 className="text-4xl font-bold">Trending Now</h2>
             </div>
-            <button onClick={() => setLocation("/")} className="flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors">
-              View All <ArrowRight className="w-4 h-4" />
+            <button onClick={() => setLocation("/tools")} className="flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors group">
+              View All <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </button>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {TRENDING_TOOLS.map((tool) => (
-              <Card key={tool.id} className="bg-gradient-to-br from-gray-900 to-gray-950 border-gray-800 hover:border-purple-500/50 transition-all cursor-pointer group p-4">
-                <div className="flex items-center justify-between mb-3">
-                  <h3 className="font-bold text-lg group-hover:text-purple-400 transition-colors">{tool.name}</h3>
-                  <Badge className="bg-red-500/20 text-red-300 text-xs">{tool.trend}</Badge>
-                </div>
-                <p className="text-sm text-gray-400 mb-3">{tool.category}</p>
-                <div className="flex items-center justify-between text-xs text-gray-500">
-                  <span className="flex items-center gap-1"><Eye className="w-3 h-3" /> {tool.views.toLocaleString()}</span>
-                  <ArrowRight className="w-3 h-3 text-purple-400 group-hover:translate-x-1 transition-transform" />
-                </div>
-              </Card>
-            ))}
-          </div>
-        </motion.section>
 
-        {/* AI TOOLS DIRECTORY - MOVED UP */}
-        <motion.section initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }}>
-          <div className="mb-8">
-            <div className="flex items-center gap-3 mb-6">
-              {renderIcon("tools")}
-              <h2 className="text-3xl font-bold">AI Tools Directory</h2>
-            </div>
-
-            {/* Search and Filter */}
-            <div className="space-y-4">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 w-4 h-4" />
-                <input
-                  type="text"
-                  placeholder="Search 1000+ tools..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 bg-gray-900 border border-gray-800 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 transition-colors"
-                />
-              </div>
-
-              <div className="flex flex-wrap gap-2">
-                <Button
-                  size="sm"
-                  variant={selectedCategory === "all" ? "default" : "outline"}
-                  onClick={() => setSelectedCategory("all")}
-                  className="rounded-full text-xs"
-                >
-                  All
-                </Button>
-                {AI_CATEGORIES.map((cat) => (
-                  <Button
-                    key={cat.id}
-                    size="sm"
-                    variant={selectedCategory === cat.id ? "default" : "outline"}
-                    onClick={() => setSelectedCategory(cat.id)}
-                    className="rounded-full text-xs"
-                  >
-                    {cat.name}
-                  </Button>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Tools Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {filteredTools.slice(0, 12).map((tool) => (
-              <Card key={tool.id} className="bg-gray-900 border-gray-800 hover:border-purple-500/50 transition-all group p-4">
-                <div className="flex items-start justify-between mb-3">
-                  <div>
-                    <h3 className="font-bold group-hover:text-purple-400 transition-colors">{tool.name}</h3>
-                    <Badge className="text-xs mt-1 bg-purple-500/20 text-purple-300">{tool.category}</Badge>
+          <motion.div variants={containerVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {AI_TOOLS.slice(0, 3).map((tool, idx) => (
+              <motion.div key={tool.id} variants={itemVariants} whileHover={{ y: -10 }} className="group">
+                <Card className="bg-gradient-to-br from-gray-900/50 to-gray-950/50 border border-purple-500/20 hover:border-purple-500/50 transition-all overflow-hidden h-full">
+                  <div className="relative h-40 overflow-hidden bg-gradient-to-br from-purple-600/20 to-pink-600/20">
+                    <motion.div className="absolute inset-0 bg-gradient-to-r from-purple-500/0 via-purple-500/20 to-purple-500/0" animate={{ x: [-200, 200] }} transition={{ duration: 3, repeat: Infinity }} />
                   </div>
-                  <Star className="w-4 h-4 text-yellow-400" fill="currentColor" />
-                </div>
-                <p className="text-sm text-gray-400 mb-3 line-clamp-2">{tool.description}</p>
-                <div className="flex items-center justify-between text-xs text-gray-500">
-                  <span>⭐ {tool.rating} ({tool.reviews})</span>
-                  <ArrowRight className="w-3 h-3 text-purple-400 group-hover:translate-x-1 transition-transform" />
-                </div>
-              </Card>
+                  <div className="p-6">
+                    <div className="flex items-start justify-between mb-3">
+                      <h3 className="font-bold text-lg group-hover:text-purple-400 transition-colors">{tool.name}</h3>
+                      <Star className="w-5 h-5 text-yellow-400" fill="currentColor" />
+                    </div>
+                    <Badge className="mb-3 bg-purple-500/20 text-purple-300">{tool.category}</Badge>
+                    <p className="text-sm text-gray-400 mb-4 line-clamp-2">{tool.description}</p>
+                    <div className="flex items-center justify-between text-xs text-gray-500">
+                      <span>⭐ {tool.rating} ({tool.reviews})</span>
+                      <ArrowRight className="w-3 h-3 text-purple-400" />
+                    </div>
+                  </div>
+                </Card>
+              </motion.div>
             ))}
-          </div>
-
-          <div className="mt-8 text-center">
-            <Button className="bg-purple-600 hover:bg-purple-700">View All {filteredTools.length} Tools</Button>
-          </div>
-        </motion.section>
-
-        {/* AI DOMAINS SECTION */}
-        <motion.section initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }}>
-          <div className="flex items-center justify-between mb-8">
-            <div className="flex items-center gap-3">
-              {renderIcon("domains")}
-              <h2 className="text-3xl font-bold">AI Domains</h2>
-            </div>
-            <button onClick={() => setLocation("/")} className="flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors">
-              View All <ArrowRight className="w-4 h-4" />
-            </button>
-          </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3">
-            {AI_DOMAINS.map((domain) => (
-              <Card key={domain.id} className="bg-gray-900 border-gray-800 hover:border-purple-500/50 transition-all cursor-pointer group p-3 text-center">
-                <h3 className="font-bold text-sm mb-1 group-hover:text-purple-400 transition-colors">{domain.name}</h3>
-                <p className="text-xs text-gray-500">{domain.tools} tools</p>
-              </Card>
-            ))}
-          </div>
+          </motion.div>
         </motion.section>
 
         {/* AI NEWS SECTION */}
         <motion.section initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }}>
-          <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center justify-between mb-12">
             <div className="flex items-center gap-3">
-              {renderIcon("news")}
-              <h2 className="text-3xl font-bold">AI News & Breakthroughs</h2>
+              <Newspaper className="w-6 h-6 text-blue-500" />
+              <h2 className="text-4xl font-bold">AI News & Breakthroughs</h2>
             </div>
-            <button onClick={() => setLocation("/ai-news")} className="flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors">
-              View All <ArrowRight className="w-4 h-4" />
+            <button onClick={() => setLocation("/ai-news")} className="flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors group">
+              View All <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </button>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {AI_NEWS.map((news) => (
-              <Card key={news.id} onClick={() => setLocation("/ai-news")} className="bg-gray-900 border-gray-800 hover:border-purple-500/50 transition-all cursor-pointer group p-4">
-                <div className="flex items-start justify-between mb-2">
-                  <Badge className="text-xs bg-purple-500/20 text-purple-300">{news.category}</Badge>
-                  {news.trending && <Badge className="text-xs bg-red-500/20 text-red-300">Trending</Badge>}
-                </div>
-                <h3 className="font-bold mb-2 group-hover:text-purple-400 transition-colors line-clamp-2">{news.title}</h3>
-                <div className="flex items-center gap-2 text-xs text-gray-500">
-                  <span>{news.date}</span>
-                  <span className="flex items-center gap-1"><Eye className="w-3 h-3" /> {news.views}</span>
-                </div>
-              </Card>
+
+          <motion.div variants={containerVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {NEWS_ARTICLES.slice(0, 3).map((article) => (
+              <motion.div key={article.id} variants={itemVariants} whileHover={{ y: -10 }} onClick={() => setLocation("/ai-news")} className="group cursor-pointer">
+                <Card className="bg-gray-900/50 border border-purple-500/20 hover:border-purple-500/50 transition-all overflow-hidden h-full">
+                  <div className="relative h-40 overflow-hidden">
+                    <img src={article.image} alt={article.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                    {article.trending && <Badge className="absolute top-3 right-3 bg-red-500/80 text-white text-xs">Trending</Badge>}
+                  </div>
+                  <div className="p-4">
+                    <Badge className="mb-2 bg-blue-500/20 text-blue-300 text-xs">{article.category}</Badge>
+                    <h3 className="font-bold mb-2 group-hover:text-purple-400 transition-colors line-clamp-2">{article.title}</h3>
+                    <div className="flex items-center gap-3 text-xs text-gray-500">
+                      <span>{article.date}</span>
+                      <span className="flex items-center gap-1"><Eye className="w-3 h-3" /> {article.views}</span>
+                      <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> {article.readTime}m</span>
+                    </div>
+                  </div>
+                </Card>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </motion.section>
 
         {/* AI CAREERS SECTION */}
         <motion.section initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }}>
-          <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center justify-between mb-12">
             <div className="flex items-center gap-3">
-              {renderIcon("careers")}
-              <h2 className="text-3xl font-bold">AI Careers & Opportunities</h2>
+              <Briefcase className="w-6 h-6 text-green-500" />
+              <h2 className="text-4xl font-bold">AI Careers & Opportunities</h2>
             </div>
-            <button onClick={() => setLocation("/ai-careers")} className="flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors">
-              View All <ArrowRight className="w-4 h-4" />
+            <button onClick={() => setLocation("/ai-careers")} className="flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors group">
+              View All <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </button>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {AI_CAREERS.map((career) => (
-              <Card key={career.id} onClick={() => setLocation("/ai-careers")} className="bg-gray-900 border-gray-800 hover:border-purple-500/50 transition-all cursor-pointer group p-4">
-                <h3 className="font-bold mb-3 group-hover:text-purple-400 transition-colors">{career.title}</h3>
-                <div className="space-y-2 text-sm">
-                  <div><span className="text-gray-400">Salary:</span> <span className="text-green-400 font-bold">{career.salary}</span></div>
-                  <div><span className="text-gray-400">Demand:</span> <span className="text-purple-400 font-bold">{career.demand}</span></div>
-                  <div><span className="text-gray-400">Companies:</span> <span className="text-blue-400 font-bold">{career.companies}+</span></div>
-                </div>
-              </Card>
+
+          <motion.div variants={containerVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {CAREER_LISTINGS.slice(0, 2).map((career) => (
+              <motion.div key={career.id} variants={itemVariants} whileHover={{ y: -10 }} onClick={() => setLocation("/ai-careers")} className="group cursor-pointer">
+                <Card className="bg-gray-900/50 border border-purple-500/20 hover:border-purple-500/50 transition-all overflow-hidden h-full">
+                  <div className="relative h-40 overflow-hidden">
+                    <img src={career.image} alt={career.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                  </div>
+                  <div className="p-6">
+                    <h3 className="font-bold text-lg mb-2 group-hover:text-purple-400 transition-colors">{career.title}</h3>
+                    <p className="text-sm text-gray-400 mb-4">{career.company}</p>
+                    <div className="grid grid-cols-3 gap-3 mb-4">
+                      <div className="bg-green-500/10 border border-green-500/30 rounded p-2">
+                        <div className="text-xs text-green-400 font-bold">{career.salary}</div>
+                        <div className="text-xs text-gray-500">Salary</div>
+                      </div>
+                      <div className="bg-purple-500/10 border border-purple-500/30 rounded p-2">
+                        <div className="text-xs text-purple-400 font-bold">{career.demand}</div>
+                        <div className="text-xs text-gray-500">Demand</div>
+                      </div>
+                      <div className="bg-blue-500/10 border border-blue-500/30 rounded p-2">
+                        <div className="text-xs text-blue-400 font-bold">{career.growth}</div>
+                        <div className="text-xs text-gray-500">Growth</div>
+                      </div>
+                    </div>
+                  </div>
+                </Card>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </motion.section>
 
         {/* RESEARCH PAPERS SECTION */}
         <motion.section initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }}>
-          <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center justify-between mb-12">
             <div className="flex items-center gap-3">
-              {renderIcon("research")}
-              <h2 className="text-3xl font-bold">Groundbreaking Research Papers</h2>
+              <BookOpen className="w-6 h-6 text-orange-500" />
+              <h2 className="text-4xl font-bold">Groundbreaking Research</h2>
             </div>
-            <button onClick={() => setLocation("/")} className="flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors">
-              View All <ArrowRight className="w-4 h-4" />
+            <button onClick={() => setLocation("/research")} className="flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors group">
+              View All <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </button>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {AI_RESEARCH_PAPERS.map((paper) => (
-              <Card key={paper.id} className="bg-gray-900 border-gray-800 hover:border-purple-500/50 transition-all cursor-pointer group p-4">
-                <h3 className="font-bold mb-2 group-hover:text-purple-400 transition-colors line-clamp-2">{paper.title}</h3>
-                <p className="text-sm text-gray-400 mb-3">{paper.authors}</p>
-                <div className="flex justify-between text-xs text-gray-500">
-                  <span>{paper.year}</span>
-                  <span>{paper.citations.toLocaleString()} citations</span>
-                </div>
-              </Card>
+
+          <motion.div variants={containerVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {RESEARCH_PAPERS.slice(0, 3).map((paper) => (
+              <motion.div key={paper.id} variants={itemVariants} whileHover={{ y: -10 }} className="group">
+                <Card className="bg-gray-900/50 border border-purple-500/20 hover:border-purple-500/50 transition-all overflow-hidden h-full">
+                  <div className="relative h-40 overflow-hidden">
+                    <img src={paper.image} alt={paper.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                  </div>
+                  <div className="p-6">
+                    <Badge className="mb-2 bg-orange-500/20 text-orange-300 text-xs">{paper.field}</Badge>
+                    <h3 className="font-bold mb-2 group-hover:text-purple-400 transition-colors line-clamp-2">{paper.title}</h3>
+                    <p className="text-sm text-gray-400 mb-4">{paper.authors}</p>
+                    <div className="flex justify-between text-xs text-gray-500">
+                      <span>{paper.year}</span>
+                      <span className="text-purple-400 font-bold">{paper.citations.toLocaleString()} citations</span>
+                    </div>
+                  </div>
+                </Card>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </motion.section>
 
-        {/* STARTUP IDEAS SECTION */}
+        {/* AI DOMAINS SECTION */}
         <motion.section initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }}>
-          <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center justify-between mb-12">
             <div className="flex items-center gap-3">
-              {renderIcon("ideas")}
-              <h2 className="text-3xl font-bold">AI Startup Ideas</h2>
+              <Globe className="w-6 h-6 text-cyan-500" />
+              <h2 className="text-4xl font-bold">AI Domains</h2>
             </div>
-            <button onClick={() => setLocation("/")} className="flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors">
-              View All <ArrowRight className="w-4 h-4" />
+            <button onClick={() => setLocation("/domains")} className="flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors group">
+              View All <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </button>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {AI_STARTUP_IDEAS.map((idea) => (
-              <Card key={idea.id} className="bg-gray-900 border-gray-800 hover:border-purple-500/50 transition-all cursor-pointer group p-4">
-                <h3 className="font-bold mb-3 group-hover:text-purple-400 transition-colors">{idea.title}</h3>
-                <div className="space-y-2 text-sm">
-                  <div><span className="text-gray-400">Market:</span> <span className="text-green-400 font-bold">{idea.market}</span></div>
-                  <div><span className="text-gray-400">Difficulty:</span> <span className="text-yellow-400 font-bold">{idea.difficulty}</span></div>
-                </div>
-              </Card>
+
+          <motion.div variants={containerVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {DOMAINS_DETAILED.slice(0, 3).map((domain) => (
+              <motion.div key={domain.id} variants={itemVariants} whileHover={{ y: -10 }} onClick={() => setLocation("/domains")} className="group cursor-pointer">
+                <Card className="bg-gray-900/50 border border-purple-500/20 hover:border-purple-500/50 transition-all overflow-hidden h-full">
+                  <div className="relative h-40 overflow-hidden">
+                    <img src={domain.image} alt={domain.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                  </div>
+                  <div className="p-6">
+                    <h3 className="font-bold text-lg mb-2 group-hover:text-purple-400 transition-colors">{domain.name}</h3>
+                    <p className="text-sm text-gray-400 mb-4">{domain.description}</p>
+                    <div className="flex flex-wrap gap-2">
+                      {domain.applications.slice(0, 2).map((app, idx) => (
+                        <Badge key={idx} className="bg-cyan-500/20 text-cyan-300 text-xs">{app}</Badge>
+                      ))}
+                    </div>
+                  </div>
+                </Card>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </motion.section>
 
         {/* USE CASES SECTION */}
         <motion.section initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }}>
-          <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center justify-between mb-12">
             <div className="flex items-center gap-3">
-              {renderIcon("usecases")}
-              <h2 className="text-3xl font-bold">Use Cases Explorer</h2>
+              <Users className="w-6 h-6 text-indigo-500" />
+              <h2 className="text-4xl font-bold">Use Cases Explorer</h2>
             </div>
-            <button onClick={() => setLocation("/")} className="flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors">
-              View All <ArrowRight className="w-4 h-4" />
+            <button onClick={() => setLocation("/use-cases")} className="flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors group">
+              View All <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </button>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-            {USE_CASES.map((usecase) => (
-              <Card key={usecase.id} className="bg-gray-900 border-gray-800 hover:border-purple-500/50 transition-all cursor-pointer group p-4">
-                <h3 className="font-bold mb-2 group-hover:text-purple-400 transition-colors">{usecase.name}</h3>
-                <p className="text-xs text-gray-500">{usecase.tools} tools</p>
-              </Card>
+
+          <motion.div variants={containerVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {USE_CASES_DETAILED.slice(0, 2).map((usecase) => (
+              <motion.div key={usecase.id} variants={itemVariants} whileHover={{ y: -10 }} onClick={() => setLocation("/use-cases")} className="group cursor-pointer">
+                <Card className="bg-gray-900/50 border border-purple-500/20 hover:border-purple-500/50 transition-all overflow-hidden h-full">
+                  <div className="relative h-40 overflow-hidden">
+                    <img src={usecase.image} alt={usecase.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                  </div>
+                  <div className="p-6">
+                    <h3 className="font-bold text-lg mb-2 group-hover:text-purple-400 transition-colors">{usecase.name}</h3>
+                    <p className="text-sm text-gray-400 mb-4">{usecase.description}</p>
+                    <Badge className="bg-indigo-500/20 text-indigo-300 text-xs">{usecase.tools} tools</Badge>
+                  </div>
+                </Card>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </motion.section>
 
-        {/* AI ETHICS SECTION */}
+        {/* STARTUP IDEAS SECTION */}
         <motion.section initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }}>
-          <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center justify-between mb-12">
             <div className="flex items-center gap-3">
-              {renderIcon("ethics")}
-              <h2 className="text-3xl font-bold">AI Ethics & Responsibility</h2>
+              <Lightbulb className="w-6 h-6 text-yellow-500" />
+              <h2 className="text-4xl font-bold">AI Startup Ideas</h2>
             </div>
-            <button onClick={() => setLocation("/")} className="flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors">
-              View All <ArrowRight className="w-4 h-4" />
+            <button onClick={() => setLocation("/startup-ideas")} className="flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors group">
+              View All <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </button>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {AI_ETHICS_TOPICS.map((topic) => (
-              <Card key={topic.id} className="bg-gray-900 border-gray-800 hover:border-purple-500/50 transition-all cursor-pointer group p-4">
-                <h3 className="font-bold mb-2 group-hover:text-purple-400 transition-colors">{topic.title}</h3>
-                <Badge className={`text-xs ${topic.concern === "Critical" ? "bg-red-500/20 text-red-300" : "bg-yellow-500/20 text-yellow-300"}`}>
-                  {topic.concern}
-                </Badge>
-              </Card>
-            ))}
-          </div>
-        </motion.section>
 
-        {/* VISIONARY POSSIBILITIES */}
-        <motion.section initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }}>
-          <div className="mb-8">
-            <div className="flex items-center gap-3">
-              <Zap className="w-5 h-5 text-purple-400" />
-              <h2 className="text-3xl font-bold">50+ Visionary AI Possibilities</h2>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {VISIONARY_POSSIBILITIES.slice(0, 12).map((possibility) => (
-              <Card
-                key={possibility.id}
-                onClick={() => setSelectedVisionaryId(possibility.id)}
-                className="bg-gray-900 border-gray-800 hover:border-purple-500/50 transition-all cursor-pointer group p-4"
-              >
-                <h3 className="font-bold mb-2 group-hover:text-purple-400 transition-colors line-clamp-2">{possibility.title}</h3>
-                <p className="text-sm text-gray-400 line-clamp-2">{possibility.description}</p>
-              </Card>
+          <motion.div variants={containerVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {STARTUP_IDEAS.slice(0, 2).map((idea) => (
+              <motion.div key={idea.id} variants={itemVariants} whileHover={{ y: -10 }} className="group">
+                <Card className="bg-gray-900/50 border border-purple-500/20 hover:border-purple-500/50 transition-all overflow-hidden h-full">
+                  <div className="relative h-40 overflow-hidden">
+                    <img src={idea.image} alt={idea.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                  </div>
+                  <div className="p-6">
+                    <h3 className="font-bold text-lg mb-2 group-hover:text-purple-400 transition-colors">{idea.title}</h3>
+                    <p className="text-sm text-gray-400 mb-4">{idea.description}</p>
+                    <div className="grid grid-cols-2 gap-3">
+                      <div className="bg-green-500/10 border border-green-500/30 rounded p-2">
+                        <div className="text-xs text-green-400 font-bold">{idea.market}</div>
+                        <div className="text-xs text-gray-500">Market</div>
+                      </div>
+                      <div className="bg-yellow-500/10 border border-yellow-500/30 rounded p-2">
+                        <div className="text-xs text-yellow-400 font-bold">{idea.difficulty}</div>
+                        <div className="text-xs text-gray-500">Difficulty</div>
+                      </div>
+                    </div>
+                  </div>
+                </Card>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </motion.section>
 
         {/* COMMUNITY SECTION */}
         <motion.section initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }}>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <Card className="bg-gradient-to-br from-purple-900/30 to-purple-900/10 border-purple-500/30 p-6 cursor-pointer hover:border-purple-500/50 transition-all group">
-              <div className="flex items-center gap-3 mb-3">
-                {renderIcon("community")}
-                <h3 className="font-bold text-lg">Community Discussions</h3>
-              </div>
-              <p className="text-gray-400 text-sm mb-4">Join conversations about AI tools and trends</p>
-              <Button variant="outline" className="w-full text-xs">Join Now</Button>
-            </Card>
-
-            <Card className="bg-gradient-to-br from-purple-900/30 to-purple-900/10 border-purple-500/30 p-6 cursor-pointer hover:border-purple-500/50 transition-all group">
-              <div className="flex items-center gap-3 mb-3">
-                {renderIcon("learning")}
-                <h3 className="font-bold text-lg">Learning Hub</h3>
-              </div>
-              <p className="text-gray-400 text-sm mb-4">Master AI tools with tutorials and guides</p>
-              <Button variant="outline" className="w-full text-xs">Explore</Button>
-            </Card>
-
-            <Card className="bg-gradient-to-br from-purple-900/30 to-purple-900/10 border-purple-500/30 p-6 cursor-pointer hover:border-purple-500/50 transition-all group">
-              <div className="flex items-center gap-3 mb-3">
-                {renderIcon("submit")}
-                <h3 className="font-bold text-lg">Submit Tool</h3>
-              </div>
-              <p className="text-gray-400 text-sm mb-4">Found a new AI tool? Share it with us</p>
-              <Button variant="outline" className="w-full text-xs">Submit</Button>
-            </Card>
-          </div>
+          <h2 className="text-4xl font-bold mb-12">Join Our Community</h2>
+          <motion.div variants={containerVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[
+              { icon: MessageSquare, title: "Discussions", desc: "Join conversations about AI", color: "from-purple-600 to-purple-700" },
+              { icon: BookOpen, title: "Learning Hub", desc: "Master AI tools with guides", color: "from-blue-600 to-blue-700" },
+              { icon: Plus, title: "Submit Tool", desc: "Share new AI discoveries", color: "from-pink-600 to-pink-700" },
+            ].map((item, idx) => (
+              <motion.div key={idx} variants={itemVariants} whileHover={{ y: -10 }}>
+                <Card className={`bg-gradient-to-br ${item.color} border border-purple-500/30 p-8 cursor-pointer hover:border-purple-500/50 transition-all text-center`}>
+                  <item.icon className="w-12 h-12 text-white mx-auto mb-4" />
+                  <h3 className="font-bold text-lg text-white mb-2">{item.title}</h3>
+                  <p className="text-white/80 text-sm">{item.desc}</p>
+                  <Button className="w-full mt-6 bg-white/20 hover:bg-white/30 text-white">Join Now</Button>
+                </Card>
+              </motion.div>
+            ))}
+          </motion.div>
         </motion.section>
       </div>
 
-      {/* VISIONARY MODAL */}
-      <AnimatePresence>
-        {selectedVisionaryId && selectedVisionary && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
-            onClick={() => setSelectedVisionaryId(null)}
-          >
-            <motion.div
-              initial={{ scale: 0.95, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.95, opacity: 0 }}
-              onClick={(e) => e.stopPropagation()}
-              className="bg-gray-900 border border-gray-800 rounded-lg max-w-2xl w-full max-h-[80vh] overflow-y-auto"
-            >
-              <div className="sticky top-0 bg-gray-900 border-b border-gray-800 p-4 flex items-center justify-between">
-                <h2 className="text-xl font-bold">{selectedVisionary.title}</h2>
-                <button onClick={() => setSelectedVisionaryId(null)} className="text-gray-400 hover:text-white">
-                  <X className="w-5 h-5" />
-                </button>
+      {/* Footer */}
+      <footer className="bg-gray-950 border-t border-purple-500/20 mt-32">
+        <div className="max-w-7xl mx-auto px-4 md:px-8 py-16">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+            <div>
+              <h3 className="font-bold text-lg mb-4">Neoaifinder</h3>
+              <p className="text-gray-400 text-sm">Discover the future of AI</p>
+            </div>
+            {[
+              { title: "Explore", links: ["Tools", "News", "Careers"] },
+              { title: "Learn", links: ["Guides", "Research", "Domains"] },
+              { title: "Community", links: ["Discussions", "Submit", "Reviews"] },
+            ].map((col, idx) => (
+              <div key={idx}>
+                <h4 className="font-bold text-sm mb-4">{col.title}</h4>
+                <ul className="space-y-2">
+                  {col.links.map((link) => (
+                    <li key={link} className="text-gray-400 text-sm hover:text-purple-400 cursor-pointer transition-colors">
+                      {link}
+                    </li>
+                  ))}
+                </ul>
               </div>
-
-              <div className="p-6 space-y-4">
-                <p className="text-gray-300">{selectedVisionary.description}</p>
-
-                {selectedVisionary.possibilities && (
-                  <div>
-                    <h3 className="font-bold mb-2">Key Possibilities:</h3>
-                    <ul className="space-y-1 text-sm text-gray-400">
-                      {selectedVisionary.possibilities.map((p, idx) => (
-                        <li key={idx}>• {p}</li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-
-                {selectedVisionary.poweredBy && (
-                  <div>
-                    <h3 className="font-bold mb-2">Powered By:</h3>
-                    <div className="flex flex-wrap gap-2">
-                      {selectedVisionary.poweredBy.map((tool, idx) => (
-                        <Badge key={idx} className="bg-purple-500/20 text-purple-300">{tool}</Badge>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            ))}
+          </div>
+          <div className="border-t border-purple-500/20 pt-8 text-center text-gray-500 text-sm">
+            <p>&copy; 2024 Neoaifinder. All rights reserved.</p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
