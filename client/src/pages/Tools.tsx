@@ -79,7 +79,7 @@ export default function Tools() {
               >
                 <option value="all">All Categories</option>
                 {AI_CATEGORIES.map((cat) => (
-                  <option key={cat} value={cat}>{cat}</option>
+                  <option key={cat.id} value={cat.id}>{cat.name}</option>
                 ))}
               </select>
             </div>
